@@ -3,12 +3,52 @@
   "version": "1.0.0",
   "description": "Playwright template",
   "main": "index.js",
-  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-chai-friendly": "^0.7.1",
+    "eslint-plugin-playwright": "^0.15.3",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "standard-version": "^9.3.2",
+    "stop-only": "^3.3.1",
+    "typescript": "^5.1.6",
+    "yarn-upgrade-all": "^0.7.1",
     "@playwright/test": "^1.41.2",
     "@types/node": "^20.11.17"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-react": "^7.33.0",
+    "otpauth": "^9.2.0"
+  },
+  "scripts": {
+    "test": "playwright test --workers 4",
+    "lint": "eslint .",
+    "lint:types": "tsc --noemit",
+    "prettier:check": "prettier --check .",
+    "prettier:format": "prettier --write .",
+    "precommit": "prettier --write . && git add -A .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --list-different",
+      "eslint"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run run precommit"
+    }
   }
 }
