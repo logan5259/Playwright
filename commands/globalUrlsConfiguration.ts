@@ -11,6 +11,7 @@ export const baseUrls = {
 
 export const urls = {
     signUp: "/customer/account/create/",
+    signIn: "/customer/account/login/",
     accountDetails: "/customer/account/",
 }
 

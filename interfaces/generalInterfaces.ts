@@ -23,4 +23,5 @@ export interface SignUpFormFixtures {
     accountDetailsPageHeader: string;
     contactInformationHeader: string;
     registrationThankYouMessage: string;
+    signInButtonLabel: string;
 }

@@ -184,7 +184,7 @@ export async function assertCreatedAccount(
     lastName: string,
     email: string,
 ) {
-    const { accountDetailsPageHeader, registrationThankYouMessage, contactInformationHeader } = assertData;
+    const { accountDetailsPageHeader, contactInformationHeader } = assertData;
     const contactInformationLocator = page.locator(`:below(span:has-text("${contactInformationHeader}"))`);
     await assertFontFamilyAndSize(
 
@@ -193,8 +193,18 @@ export async function assertCreatedAccount(
         }),
         "40px",
     );
-    await expect(page.getByText(registrationThankYouMessage, { exact: true })).toBeVisible();
+
     await expect(contactInformationLocator.first()).toContainText(`${name}`);
     await expect(contactInformationLocator.first()).toContainText(`${lastName}`);
     await expect(contactInformationLocator.first()).toContainText(`${email}`);
+}
+
+export async function assertRegistrationMessage(
+    page: Page,
+    assertData: SignUpFormFixtures
+) {
+    const { registrationThankYouMessage } = assertData;
+    
+    await expect(page.getByText(registrationThankYouMessage, { exact: true })).toBeVisible();
+
 }

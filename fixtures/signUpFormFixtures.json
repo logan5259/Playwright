@@ -15,5 +15,6 @@
     "passwordCharactersValidationMessage": "Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.",
     "accountDetailsPageHeader": "My Account",
     "contactInformationHeader": "Contact Information",
-    "registrationThankYouMessage": "Thank you for registering with Main Website Store."
+    "registrationThankYouMessage": "Thank you for registering with Main Website Store.",
+    "signInButtonLabel": "Sign In"
 }

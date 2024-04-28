@@ -52,7 +52,7 @@ export async function createAccount(
   assertData: SignUpFormFixtures,
   env: TestEnvironment,
 ) {
-  const { createAccountButtonLabel , accountDetailsPageHeader, contactInformationHeader, registrationThankYouMessage} = assertData;
+  const { createAccountButtonLabel } = assertData;
 
   const randomeSpecialSymbols = generateRandomSpecialSymbols()
   const name = faker.name.firstName();
@@ -77,4 +77,31 @@ export async function createAccount(
   expect(page).toHaveURL(`${baseUrls[env]}${urls.accountDetails}`);
 
   return { email, password, name, lastName };
+}
+
+export async function visitSignInPage(
+  page: Page,
+  env: TestEnvironment,
+
+) {
+  const url = baseUrls[env];
+  await page.goto(`${url}${urls.signIn}`);
+}
+
+export async function loginWithCreatedAccount(
+  page: Page,
+  assertData: SignUpFormFixtures,
+  email: string,
+  password: string,
+
+) {
+  const { signInButtonLabel } = assertData;
+  const loginLocator = page.locator("input[name='login[username]']");
+  const passwordLocator = page.locator("input[name='login[password]']");
+  const signInButtonLocator = page.getByRole('button', { name: signInButtonLabel });
+  
+  await loginLocator.fill(email);
+  await passwordLocator.fill(password);
+  await signInButtonLocator.click();
+
 }
