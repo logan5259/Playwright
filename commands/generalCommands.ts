@@ -1,8 +1,7 @@
 import { Page, expect } from "@playwright/test";
 import * as faker from 'faker';
-import { assertFontFamilyAndSize } from "../commands/signUpAssertionsCommands"
 import { baseUrls, urls } from "../commands/globalUrlsConfiguration";
-import { SignUpFormFixtures } from "../interfaces/generalInterfaces";
+import { SignUpFormFixtures, ProductsFixtures } from "../interfaces/generalInterfaces";
 import {
   TestEnvironment,
 } from "../interfaces/generalInterfaces";
@@ -99,9 +98,20 @@ export async function loginWithCreatedAccount(
   const loginLocator = page.locator("input[name='login[username]']");
   const passwordLocator = page.locator("input[name='login[password]']");
   const signInButtonLocator = page.getByRole('button', { name: signInButtonLabel });
-  
+
   await loginLocator.fill(email);
   await passwordLocator.fill(password);
   await signInButtonLocator.click();
 
+}
+
+
+export async function searchProduct(
+  page: Page,
+  assertData:  ProductsFixtures,
+  productName: string
+) {
+  const { searchPlacholderMessage } = assertData
+  await page.getByPlaceholder(searchPlacholderMessage).fill(productName);
+  await page.keyboard.press('Enter');
 }

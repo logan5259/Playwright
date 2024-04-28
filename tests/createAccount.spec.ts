@@ -1,6 +1,5 @@
 /* eslint-disable playwright/expect-expect */
 import { test, context  } from "@playwright/test";
-import { baseUrls, urls } from "../commands/globalUrlsConfiguration";
 import { visitSignUpPage, acceptCookies, loadFixtureData, createAccount, visitSignInPage, loginWithCreatedAccount } from "../commands/generalCommands"
 import { TestEnvironment } from "../interfaces/generalInterfaces";
 import { assertSignUpPage, assertSignUpPageValidations, assertPasswordsValidations, assertCreatedAccount, assertRegistrationMessage } from "../commands/signUpAssertionsCommands"

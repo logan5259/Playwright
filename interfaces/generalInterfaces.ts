@@ -25,3 +25,7 @@ export interface SignUpFormFixtures {
     registrationThankYouMessage: string;
     signInButtonLabel: string;
 }
+
+export interface ProductsFixtures {
+  searchPlacholderMessage: string
+}
