@@ -6,11 +6,12 @@ export const baseUrls = {
     dev: "XXXXXX",
     local: frontendUrl,
     stg: "XXXXXX",
-    prod: "XXXXXX",
+    prod: "https://magento.softwaretestingboard.com",
 };
 
 export const urls = {
-    landingPage: "/en-de/home/",
+    signUp: "/customer/account/create/",
+    accountDetails: "/customer/account/",
 }
 
 export const credentials = {

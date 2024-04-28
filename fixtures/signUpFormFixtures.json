@@ -1,0 +1,18 @@
+{
+    "signupFormHeader": "Create New Customer Account",
+    "signupFormPresonalInfromationHeader": "Personal Information",
+    "signInHeader": "Sign-in Information",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "emailLabel": "Email",
+    "passwordLabel" : "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "createAccountButtonLabel": "Create an Account",
+    "requiredFieldValidationMessage": "This is a required field.",
+    "emailAddressValidationMessage": "Please enter a valid email address (Ex: johndoe@domain.com).",
+    "passwordsAreNotTheSameValidationMessage" : "Please enter the same value again.",
+    "passwirdIsTooShortValidationMessage": "Minimum length of this field must be equal or greater than 8 symbols. Leading and trailing spaces will be ignored.",
+    "passwordCharactersValidationMessage": "Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.",
+    "accountDetailsPageHeader": "My Account",
+    "contactInformationHeader": "Contact Information"
+}
