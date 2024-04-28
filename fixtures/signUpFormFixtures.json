@@ -14,5 +14,6 @@
     "passwirdIsTooShortValidationMessage": "Minimum length of this field must be equal or greater than 8 symbols. Leading and trailing spaces will be ignored.",
     "passwordCharactersValidationMessage": "Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.",
     "accountDetailsPageHeader": "My Account",
-    "contactInformationHeader": "Contact Information"
+    "contactInformationHeader": "Contact Information",
+    "registrationThankYouMessage": "Thank you for registering with Main Website Store."
 }

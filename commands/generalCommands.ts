@@ -52,7 +52,7 @@ export async function createAndAssertAccount(
   assertData: SignUpFormFixtures,
   env: TestEnvironment,
 ) {
-  const { createAccountButtonLabel , accountDetailsPageHeader, contactInformationHeader} = assertData;
+  const { createAccountButtonLabel , accountDetailsPageHeader, contactInformationHeader, registrationThankYouMessage} = assertData;
 
   const randomeSpecialSymbols = generateRandomSpecialSymbols()
   const name = faker.name.firstName();
@@ -65,7 +65,7 @@ export async function createAndAssertAccount(
   const emailLocator = page.locator("input[id='email_address']");
   const passwordLocator = page.locator("input[type='password'][id='password']");
   const passwordConfiramtionLocator = page.locator("input[type='password'][id='password-confirmation']");
-  const locator = page.locator(`:below(span:has-text("${contactInformationHeader}"))`)
+  const contactInformationLocator = page.locator(`:below(span:has-text("${contactInformationHeader}"))`)
 
   await firstNameLocator.fill(name);
   await lastNameLocator.fill(lastName);
@@ -83,6 +83,7 @@ export async function createAndAssertAccount(
     }),
     "40px",
   );
-  expect (locator.first()).toContainText(`${name} ${lastName}`);
-  expect (locator.first()).toContainText(`${email}`);
+  await expect(page.getByText(registrationThankYouMessage, { exact: true })).toBeVisible();
+  await expect (contactInformationLocator.first()).toContainText(`${name} ${lastName}`);
+  await expect (contactInformationLocator.first()).toContainText(`${email}`);
 }
