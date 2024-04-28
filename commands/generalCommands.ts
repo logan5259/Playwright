@@ -47,7 +47,7 @@ function generateRandomSpecialSymbols() {
   return randomSpecialSymbols;
 }
 
-export async function createAndAssertAccount(
+export async function createAccount(
   page: Page,
   assertData: SignUpFormFixtures,
   env: TestEnvironment,
@@ -65,7 +65,7 @@ export async function createAndAssertAccount(
   const emailLocator = page.locator("input[id='email_address']");
   const passwordLocator = page.locator("input[type='password'][id='password']");
   const passwordConfiramtionLocator = page.locator("input[type='password'][id='password-confirmation']");
-  const contactInformationLocator = page.locator(`:below(span:has-text("${contactInformationHeader}"))`)
+
 
   await firstNameLocator.fill(name);
   await lastNameLocator.fill(lastName);
@@ -76,14 +76,5 @@ export async function createAndAssertAccount(
 
   expect(page).toHaveURL(`${baseUrls[env]}${urls.accountDetails}`);
 
-  await assertFontFamilyAndSize(
-
-    page.getByRole("heading", {
-      name: accountDetailsPageHeader,
-    }),
-    "40px",
-  );
-  await expect(page.getByText(registrationThankYouMessage, { exact: true })).toBeVisible();
-  await expect (contactInformationLocator.first()).toContainText(`${name} ${lastName}`);
-  await expect (contactInformationLocator.first()).toContainText(`${email}`);
+  return { email, password, name, lastName };
 }

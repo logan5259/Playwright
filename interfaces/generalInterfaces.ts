@@ -22,4 +22,5 @@ export interface SignUpFormFixtures {
     passwordCharactersValidationMessage: string;
     accountDetailsPageHeader: string;
     contactInformationHeader: string;
+    registrationThankYouMessage: string;
 }

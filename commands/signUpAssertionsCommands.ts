@@ -155,19 +155,19 @@ export async function assertPasswordsValidations(
 
     await passwordLocator.fill("123456789");
     await page.getByRole('button', { name: createAccountButtonLabel }).click();
-    await  expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
+    await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("test123123123");
     await page.getByRole('button', { name: createAccountButtonLabel }).click();
-    await  expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
+    await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("1!@#$%^&*!");
     await page.getByRole('button', { name: createAccountButtonLabel }).click();
-    await  expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
+    await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("TEsTTHReeCLASSES");
     await page.getByRole('button', { name: createAccountButtonLabel }).click();
-    await  expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
+    await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("!@#$%^&*()_");
     await passwordConfiramtionLocator.fill(")(*&^%#$%^&*");
@@ -175,4 +175,26 @@ export async function assertPasswordsValidations(
 
     await expect(emailAddressErrorLocator).toHaveText(emailAddressValidationMessage);
     await expect(passwordErrorConfiramtionLocator).toHaveText(passwordsAreNotTheSameValidationMessage);
+}
+
+export async function assertCreatedAccount(
+    page: Page,
+    assertData: SignUpFormFixtures,
+    name: string,
+    lastName: string,
+    email: string,
+) {
+    const { accountDetailsPageHeader, registrationThankYouMessage, contactInformationHeader } = assertData;
+    const contactInformationLocator = page.locator(`:below(span:has-text("${contactInformationHeader}"))`);
+    await assertFontFamilyAndSize(
+
+        page.getByRole("heading", {
+            name: accountDetailsPageHeader,
+        }),
+        "40px",
+    );
+    await expect(page.getByText(registrationThankYouMessage, { exact: true })).toBeVisible();
+    await expect(contactInformationLocator.first()).toContainText(`${name}`);
+    await expect(contactInformationLocator.first()).toContainText(`${lastName}`);
+    await expect(contactInformationLocator.first()).toContainText(`${email}`);
 }

@@ -1,8 +1,9 @@
 /* eslint-disable playwright/expect-expect */
-import { test } from "@playwright/test";
-import { visitSignUpPage, acceptCookies, loadFixtureData, createAndAssertAccount} from "../commands/generalCommands"
+import { test, context  } from "@playwright/test";
+import { baseUrls, urls } from "../commands/globalUrlsConfiguration";
+import { visitSignUpPage, acceptCookies, loadFixtureData, createAccount } from "../commands/generalCommands"
 import { TestEnvironment } from "../interfaces/generalInterfaces";
-import { assertSignUpPage, assertSignUpPageValidations, assertPasswordsValidations } from "../commands/signUpAssertionsCommands"
+import { assertSignUpPage, assertSignUpPageValidations, assertPasswordsValidations, assertCreatedAccount } from "../commands/signUpAssertionsCommands"
 
 // env can be set manuall for that particular test with values: prod, stg, local, dev
 const env = process.env.TEST_ENV as TestEnvironment;
@@ -10,7 +11,7 @@ const env = process.env.TEST_ENV as TestEnvironment;
 test.describe.parallel("Create the account and log in", () => {
 
   test(`Create the account and log in`, async ({
-    page,
+    page, context
   }) => {
     const assertData = await loadFixtureData(
       `fixtures/signUpFormFixtures.json`,
@@ -20,7 +21,13 @@ test.describe.parallel("Create the account and log in", () => {
     await assertSignUpPage(page, assertData);
     await assertSignUpPageValidations(page, assertData);
     await assertPasswordsValidations(page, assertData);
-    await createAndAssertAccount(page, assertData, env);
+    const { email, password, name, lastName } = await createAccount(page, assertData, env);
+    await assertCreatedAccount(page, assertData, email, name, lastName)
+    await page.close();
+    const newPage = await context.newPage();
+    await context.clearCookies();
+    await newPage.goto(baseUrls[env]);
+    await acceptCookies(newPage);
   });
 
 });
