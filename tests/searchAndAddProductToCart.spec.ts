@@ -40,19 +40,28 @@ test.describe.parallel("Search the product and add to the cart", () => {
             for (let a = 0; a <= nextPageClicks; a++) {
 
                 const productsLeft = numberOfSearchedProduct - nextPageClicks * 12
+
                 for (let i = 0; i < productsLeft; i++) {
 
                     const productLocator = page.locator("[class='product-item-link']").nth(i);
-                    await productLocator.click();
+                    await productLocator.click({ timeout: 30000 });
 
                     const productNameLocator = page.locator("span[itemprop='name']");
                     const productName = await productNameLocator.innerText();
-                    await page.goBack();
-                    console.log(productName);
 
+                    await page.getByRole('link', { name: 'Details ' }).click();
+                    const productDescriptionLocator = page.getByLabel('Details');
+                    expect(productDescriptionLocator).toBeVisible();
+                    const productDescription = await productDescriptionLocator.innerText();
 
-
-
+                    let productInformation = (productName.toLowerCase() + ' ' + productDescription.toLowerCase())
+                    expect(productInformation).toContain(testObject.productName.toLowerCase());
+                    console.log(productInformation);
+                    productInformation = ''
+                    await page.goBack({ waitUntil: 'load' })
+                    await page.goBack({ waitUntil: 'load' });
+                    await page.getByRole('heading', { name: `Search results for: '${testObject.productName}'` }).scrollIntoViewIfNeeded();
+                    await expect(page.getByRole('heading', { name: `Search results for: '${testObject.productName}'` }).locator('span')).toBeVisible();
                 }
                 if (a <= nextPageClicks - 1) {
                     await page.getByRole('link', { name: ' Page Next' }).click();
