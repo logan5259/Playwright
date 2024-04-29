@@ -47,5 +47,7 @@ export interface FilterAndAddToCartProductTestConfiguration {
   secondProductFilter: string;
   secondProductFilterValue: string;
   selectedProductName: string;
+  productSize:string;
+  productColor: string;
   searchResults: boolean;
 }

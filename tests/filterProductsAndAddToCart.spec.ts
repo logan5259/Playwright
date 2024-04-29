@@ -2,7 +2,7 @@
 import { test, expect } from "@playwright/test";
 import { acceptCookies, loadFixtureData, selectProductsFromMainMenu } from "../commands/generalCommands"
 import { TestEnvironment, FilterAndAddToCartProductTestConfiguration } from "../interfaces/generalInterfaces";
-import { assertSelectedProductsFromMainMenu, selectAndAssertFirstFilterProducts, selectAndAssertSecondtFilterProducts } from "../commands/productsAssertionCommands"
+import { assertSelectedProductsFromMainMenu, selectAndAssertFirstFilterProducts, selectAndAssertSecondtFilterProducts, addAndAssertProductToCart } from "../commands/productsAssertionCommands"
 import { baseUrls } from "../commands/globalUrlsConfiguration";
 
 
@@ -18,7 +18,9 @@ const testsConfiguration: Array<FilterAndAddToCartProductTestConfiguration> = [
         firstProductFilterValue: "S",
         secondProductFilter: "PRICE",
         secondProductFilterValue: "$30.00 - $39.99",
-        selectedProductName: "Iris Workout Top",
+        selectedProductName: "Diva Gym Tee",
+        productSize: "S",
+        productColor: "Orange",
         searchResults: true,
     },
 
@@ -38,6 +40,7 @@ test.describe.parallel("Select product category, apply filters and add to cart",
             await assertSelectedProductsFromMainMenu(page, testObject);
             await selectAndAssertFirstFilterProducts(page, testObject);
             await selectAndAssertSecondtFilterProducts(page, testObject);
+            await addAndAssertProductToCart(page, testObject);
         });
     }
 });

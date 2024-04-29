@@ -110,3 +110,26 @@ export async function selectAndAssertSecondtFilterProducts(
 
     }
 }
+
+export async function addAndAssertProductToCart(
+    page: Page,
+    testObject: FilterAndAddToCartProductTestConfiguration,
+
+) {
+    // Juze nie mam czasu przenosić wszsytkeigo do fixtur
+    const {selectedProductName, productSize, productColor } = testObject;
+    await page.getByRole('link', { name: selectedProductName, exact: true }).click();
+    await expect(page.getByRole('heading', { name: selectedProductName }).locator('span')).toBeVisible();
+    await expect(page.locator("button[id='product-addtocart-button']")).toBeVisible();
+    await page.getByLabel(productSize, { exact: true }).click();
+    await page.getByLabel(productColor).click();
+    await page.locator("button[id='product-addtocart-button']").click();
+    await expect(page.locator('#product_addtocart_form div').filter({ hasText: 'Adding...' }).nth(3)).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'My Cart Loading...' })).not.toBeVisible();
+    await page.getByRole('link', { name: 'My Cart' }).click();
+    await page.getByRole('link', { name: 'shopping cart' }).click();
+    await expect(page.getByRole('img', { name: 'Loading...' })).not.toBeVisible();
+    await expect(page.getByText(selectedProductName, { exact: true }).first()).toBeVisible();
+    await expect(page.getByText(productColor, { exact: true })).toBeVisible();
+    await expect(page.getByText(productSize, { exact: true })).toBeVisible();
+}
