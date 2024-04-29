@@ -1,7 +1,7 @@
 import { Page, expect } from "@playwright/test";
 import * as faker from 'faker';
 import { baseUrls, urls } from "../commands/globalUrlsConfiguration";
-import { SignUpFormFixtures, ProductsFixtures } from "../interfaces/generalInterfaces";
+import { SignUpFormFixtures, ProductsFixtures, FilterAndAddToCartProductTestConfiguration } from "../interfaces/generalInterfaces";
 import {
   TestEnvironment,
 } from "../interfaces/generalInterfaces";
@@ -115,3 +115,13 @@ export async function searchProduct(
   await page.keyboard.press('Enter');
 }
 
+export async function selectProductsFromMainMenu(
+  page: Page,
+  testObject: FilterAndAddToCartProductTestConfiguration
+
+) {
+  const { mainProductCategory, productSubtype, productType } = testObject
+  await page.getByRole('menuitem', { name: mainProductCategory }).hover();
+  await page.getByRole('menuitem', { name: productSubtype }).hover();
+  await page.getByRole('menuitem', { name: productType }).click();
+}

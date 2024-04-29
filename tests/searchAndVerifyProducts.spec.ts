@@ -1,14 +1,14 @@
 /* eslint-disable playwright/expect-expect */
 import { test } from "@playwright/test";
 import { acceptCookies, loadFixtureData, searchProduct } from "../commands/generalCommands"
-import { TestEnvironment, searchTestConfiguration } from "../interfaces/generalInterfaces";
+import { TestEnvironment, SearchTestConfiguration } from "../interfaces/generalInterfaces";
 import { assertSearchedProducts } from "../commands/productsAssertionCommands"
 import { baseUrls } from "../commands/globalUrlsConfiguration";
 
 
 // env can be set manuall for that particular test with values: prod, stg, local, dev
 const env = process.env.TEST_ENV as TestEnvironment;
-const testsConfiguration: Array<searchTestConfiguration> = [
+const testsConfiguration: Array<SearchTestConfiguration> = [
     {
         translationFixture: "productsFixtures.json",
         searchedProduct: "Jacket",
@@ -42,7 +42,7 @@ test.describe.parallel("Search the product and verify if the keyword is in ptodu
             await page.goto(baseUrls[env]);
             await acceptCookies(page);
             await searchProduct(page, assertData, testObject.searchedProduct);
-            await assertSearchedProducts(page, testObject, assertData);
+            await assertSearchedProducts(page, testObject, assertData, testObject.searchedProduct);
         });
     }
 });
