@@ -105,13 +105,13 @@ export async function loginWithCreatedAccount(
 
 }
 
-
 export async function searchProduct(
   page: Page,
-  assertData:  ProductsFixtures,
+  assertData: ProductsFixtures,
   productName: string
 ) {
   const { searchPlacholderMessage } = assertData
   await page.getByPlaceholder(searchPlacholderMessage).fill(productName);
   await page.keyboard.press('Enter');
 }
+

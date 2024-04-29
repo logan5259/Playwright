@@ -1,3 +1,4 @@
 {
-    "searchPlacholderMessage": "Search entire store here..."
+    "searchPlacholderMessage": "Search entire store here...",
+    "noSearchResultsWarning": "Your search returned no results."
 }

@@ -27,5 +27,12 @@ export interface SignUpFormFixtures {
 }
 
 export interface ProductsFixtures {
-  searchPlacholderMessage: string
+  searchPlacholderMessage: string;
+  noSearchResultsWarning:string;
+}
+
+export interface searchTestConfiguration {
+  translationFixture: string;
+  searchedProduct: string;
+  searchResults: boolean;
 }
