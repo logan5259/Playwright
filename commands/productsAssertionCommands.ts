@@ -13,9 +13,9 @@ export async function assertSearchedProducts(
 
     const searchResultsHeaderLocator = page.getByRole('heading', { name: `Search results for: '${searchedProduct}'` }).locator('span');
     const productNameLocator = page.locator("span[itemprop='name']");
-    const detailsTabLocator = page.getByRole('link', { name: 'Details ' });
+    const detailsTabLocator = page.getByRole('link', { name: 'Details' });
     const productDescriptionLocator = page.getByLabel('Details');
-    const nextPageButtonLocator = page.getByRole('link', { name: ' Page Next' });
+    const nextPageButtonLocator = page.getByRole('link', { name: 'Page Next' });
 
     if (searchResults === true) {
         const numberOfSearchedProductsLocator = page.locator("div[class='toolbar toolbar-products'] [class='toolbar-number']").nth(2);
@@ -44,8 +44,13 @@ export async function assertSearchedProducts(
                 expect(productInformation).toContain(searchedProduct.toLowerCase());
 
                 productInformation = ''
+                // This is an issue with inconsistent site navigation behavior.
                 await page.goBack({ waitUntil: 'load', timeout: 30000 });
-                await page.goBack({ waitUntil: 'load', timeout: 30000 });
+                if (!(await searchResultsHeaderLocator.isVisible())) {
+
+                    await page.goBack({ waitUntil: 'load', timeout: 30000 })
+
+                  }
                 await searchResultsHeaderLocator.scrollIntoViewIfNeeded({ timeout: 30000 });
                 await expect(searchResultsHeaderLocator).toBeVisible();
             }
@@ -67,7 +72,7 @@ export async function assertSelectedProductsFromMainMenu(
 ) {
     const { productType } = testObject;
     await expect(page.getByLabel('Items').getByText(productType)).toBeVisible();
-    const amoutOfProductsLocator = page.locator('#toolbar-amount')
+    const amoutOfProductsLocator = page.locator('#toolbar-amount').first();
     const amountOfProducts = await amoutOfProductsLocator.innerText();
     expect(parseInt(amountOfProducts)).toBeGreaterThan(0);
 }
@@ -117,7 +122,7 @@ export async function addAndAssertProductToCart(
 
 ) {
     // Juze nie mam czasu przenosić wszsytkeigo do fixtur
-    const {selectedProductName, productSize, productColor } = testObject;
+    const { selectedProductName, productSize, productColor } = testObject;
     await page.getByRole('link', { name: selectedProductName, exact: true }).click();
     await expect(page.getByRole('heading', { name: selectedProductName }).locator('span')).toBeVisible();
     await expect(page.locator("button[id='product-addtocart-button']")).toBeVisible();

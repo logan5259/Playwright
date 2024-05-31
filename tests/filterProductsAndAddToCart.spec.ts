@@ -1,6 +1,6 @@
 /* eslint-disable playwright/expect-expect */
 import { test, expect } from "@playwright/test";
-import { acceptCookies, loadFixtureData, selectProductsFromMainMenu } from "../commands/generalCommands"
+import { loadFixtureData, selectProductsFromMainMenu } from "../commands/generalCommands"
 import { TestEnvironment, FilterAndAddToCartProductTestConfiguration } from "../interfaces/generalInterfaces";
 import { assertSelectedProductsFromMainMenu, selectAndAssertFirstFilterProducts, selectAndAssertSecondtFilterProducts, addAndAssertProductToCart } from "../commands/productsAssertionCommands"
 import { baseUrls } from "../commands/globalUrlsConfiguration";
@@ -35,12 +35,12 @@ test.describe.parallel("Select product category, apply filters and add to cart",
                 `fixtures/${testObject.translationFixture}`
             );
             await page.goto(baseUrls[env]);
-            await acceptCookies(page);
             await selectProductsFromMainMenu(page, testObject);
             await assertSelectedProductsFromMainMenu(page, testObject);
             await selectAndAssertFirstFilterProducts(page, testObject);
             await selectAndAssertSecondtFilterProducts(page, testObject);
             await addAndAssertProductToCart(page, testObject);
+            await page.close();
         });
     }
 });

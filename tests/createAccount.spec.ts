@@ -1,6 +1,6 @@
 /* eslint-disable playwright/expect-expect */
-import { test, context  } from "@playwright/test";
-import { visitSignUpPage, acceptCookies, loadFixtureData, createAccount, visitSignInPage, loginWithCreatedAccount } from "../commands/generalCommands"
+import { test, context } from "@playwright/test";
+import { visitSignUpPage, loadFixtureData, createAccount, visitSignInPage, loginWithCreatedAccount } from "../commands/generalCommands"
 import { TestEnvironment } from "../interfaces/generalInterfaces";
 import { assertSignUpPage, assertSignUpPageValidations, assertPasswordsValidations, assertCreatedAccount, assertRegistrationMessage } from "../commands/signUpAssertionsCommands"
 
@@ -16,7 +16,6 @@ test.describe.parallel("Create the account and log in", () => {
       `fixtures/signUpFormFixtures.json`,
     );
     await visitSignUpPage(page, env);
-    await acceptCookies(page);
     await assertSignUpPage(page, assertData);
     await assertSignUpPageValidations(page, assertData);
     await assertPasswordsValidations(page, assertData);
@@ -26,8 +25,7 @@ test.describe.parallel("Create the account and log in", () => {
     await page.close();
     const newPage = await context.newPage();
     await context.clearCookies();
-    await visitSignInPage(newPage, env)
-    await acceptCookies(newPage);
+    await visitSignInPage(newPage, env);
     await loginWithCreatedAccount(newPage, assertData, email, password);
     await assertCreatedAccount(newPage, assertData, email, name, lastName)
 

@@ -15,12 +15,6 @@ export async function visitSignUpPage(
   await page.goto(`${url}${urls.signUp}`);
 }
 
-export async function acceptCookies(
-  page: Page,
-) {
-  await page.getByLabel('Consent', { exact: true }).click();
-}
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { promises: fsPromise } = require("fs");
 

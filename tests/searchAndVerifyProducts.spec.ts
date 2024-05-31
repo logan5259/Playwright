@@ -1,6 +1,6 @@
 /* eslint-disable playwright/expect-expect */
 import { test } from "@playwright/test";
-import { acceptCookies, loadFixtureData, searchProduct } from "../commands/generalCommands"
+import { loadFixtureData, searchProduct } from "../commands/generalCommands"
 import { TestEnvironment, SearchTestConfiguration } from "../interfaces/generalInterfaces";
 import { assertSearchedProducts } from "../commands/productsAssertionCommands"
 import { baseUrls } from "../commands/globalUrlsConfiguration";
@@ -33,16 +33,16 @@ const testsConfiguration: Array<SearchTestConfiguration> = [
 
 test.describe.parallel("Search the product and verify if the keyword is in ptoduct title or description", () => {
     for (const testObject of testsConfiguration) {
-        test(`Search the ${testObject.searchedProduct} and verify if the keyword is in ptoduct title or description`, async ({
+        test(`Search the ${testObject.searchedProduct} and verify if the keyword is in products title or description`, async ({
             page
         }) => {
             const assertData = await loadFixtureData(
                 `fixtures/${testObject.translationFixture}`
             );
             await page.goto(baseUrls[env]);
-            await acceptCookies(page);
             await searchProduct(page, assertData, testObject.searchedProduct);
             await assertSearchedProducts(page, testObject, assertData, testObject.searchedProduct);
+            await page.close();
         });
     }
 });
