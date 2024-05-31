@@ -71,9 +71,9 @@ export async function assertSelectedProductsFromMainMenu(
 
 ) {
     const { productType } = testObject;
-    
-    await expect(page.getByLabel('Items').getByText(productType)).toBeVisible();
+    const itemLocator = page.getByLabel('Items').getByText(productType);
     const amoutOfProductsLocator = page.locator('#toolbar-amount').first();
+    await expect(itemLocator).toBeVisible();
     const amountOfProducts = await amoutOfProductsLocator.innerText();
     expect(parseInt(amountOfProducts)).toBeGreaterThan(0);
 }
@@ -84,15 +84,19 @@ export async function selectAndAssertFirstFilterProducts(
 
 ) {
     const { firstProductFilterValue, firstProductFilter } = testObject;
-
-    await page.waitForLoadState('load');
-    await page.getByRole('tab', { name: firstProductFilter }).click();
-    await page.getByRole('link', { name: firstProductFilterValue, exact: true }).click({ force: true });
-    await page.waitForLoadState('load');
+    const productFilterTabLocator = page.getByRole('tab', { name: firstProductFilter });
+    const productLinkLocator = page.getByRole('link', { name: firstProductFilterValue, exact: true });
     const amoutOfProductsLocator = page.locator('#toolbar-amount').nth(1)
     const amountOfProducts = await amoutOfProductsLocator.innerText();
+
+    await page.waitForLoadState('load');
+    await productFilterTabLocator.click();
+    await productLinkLocator.click({ force: true });
+    await page.waitForLoadState('load');
+
     for (let i = 0; i < parseInt(amountOfProducts); i++) {
-        await expect(page.locator(`div[class='product-item-info'] [option-tooltip-value='${firstProductFilterValue}']`).nth(i)).toBeVisible();
+        const productItemInfoLocator = page.locator(`div[class='product-item-info'] [option-tooltip-value='${firstProductFilterValue}']`).nth(i)
+        await expect(productItemInfoLocator).toBeVisible();
     }
 }
 
@@ -102,12 +106,14 @@ export async function selectAndAssertSecondtFilterProducts(
 
 ) {
     const { secondProductFilterValue, secondProductFilter } = testObject;
+    const productFilterTabLocator = page.getByRole('tab', { name: secondProductFilter });
+    const productLinkLocator = page.getByRole('link', { name: secondProductFilterValue });
 
     await page.waitForLoadState('load');
-    await page.getByRole('tab', { name: secondProductFilter }).click();
-    await page.getByRole('link', { name: secondProductFilterValue }).click({ force: true });
+    await productFilterTabLocator.click();
+    await productLinkLocator.click({ force: true });
     await page.waitForLoadState('load');
-    const amoutOfProductsLocator = page.locator('#toolbar-amount').nth(0)
+    const amoutOfProductsLocator = page.locator('#toolbar-amount').nth(0);
     const amountOfProducts = await amoutOfProductsLocator.innerText();
     expect(parseInt(amountOfProducts)).toEqual(3);
     for (let i = 0; i < parseInt(amountOfProducts); i++) {
@@ -125,22 +131,34 @@ export async function addAndAssertProductToCart(
     assertData: ProductsFixtures
 
 ) {
-
     const { selectedProductName, productSize, productColor } = testObject;
     const { cartLoadingMessage, addToCartMessage, myCartLabel, shoppingCartLabel, loadingMessage } = assertData;
+    const selectedProductLocator = page.getByRole('link', { name: selectedProductName, exact: true });
+    const selectedProductHeaderLocator = page.getByRole('heading', { name: selectedProductName }).locator('span');
+    const addToCartButtonLocator = page.locator("button[id='product-addtocart-button']");
+    const productSizeLabelLocator = page.getByLabel(productSize, { exact: true });
+    const productColorLabelLocator = page.getByLabel(productColor);
+    const addToCardMessageLocator = page.locator('#product_addtocart_form div').filter({ hasText: addToCartMessage }).nth(3);
+    const cartLoadingLinkLocator = page.getByRole('link', { name: cartLoadingMessage });
+    const cartLabelLocator = page.getByRole('link', { name: myCartLabel });
+    const cartShoppingLabelLocator = page.getByRole('link', { name: shoppingCartLabel });
+    const loadingLocator = page.getByRole('img', { name: loadingMessage });
+    const selectedProductNameLocator = page.getByText(selectedProductName, { exact: true }).first();
+    const selectedProductColorLocator = page.getByText(productColor, { exact: true });
+    const selectedProductSizeLocator = page.getByText(productSize, { exact: true })
 
-    await page.getByRole('link', { name: selectedProductName, exact: true }).click();
-    await expect(page.getByRole('heading', { name: selectedProductName }).locator('span')).toBeVisible();
-    await expect(page.locator("button[id='product-addtocart-button']")).toBeVisible();
-    await page.getByLabel(productSize, { exact: true }).click();
-    await page.getByLabel(productColor).click();
-    await page.locator("button[id='product-addtocart-button']").click();
-    await expect(page.locator('#product_addtocart_form div').filter({ hasText: addToCartMessage }).nth(3)).not.toBeVisible();
-    await expect(page.getByRole('link', { name: cartLoadingMessage })).not.toBeVisible();
-    await page.getByRole('link', { name: myCartLabel }).click();
-    await page.getByRole('link', { name: shoppingCartLabel }).click();
-    await expect(page.getByRole('img', { name: loadingMessage })).not.toBeVisible();
-    await expect(page.getByText(selectedProductName, { exact: true }).first()).toBeVisible();
-    await expect(page.getByText(productColor, { exact: true })).toBeVisible();
-    await expect(page.getByText(productSize, { exact: true })).toBeVisible();
+    await selectedProductLocator.click();
+    await expect(selectedProductHeaderLocator).toBeVisible();
+    await expect(addToCartButtonLocator).toBeVisible();
+    await productSizeLabelLocator.click();
+    await productColorLabelLocator.click();
+    await addToCartButtonLocator.click();
+    await expect(addToCardMessageLocator).not.toBeVisible();
+    await expect(cartLoadingLinkLocator).not.toBeVisible();
+    await cartLabelLocator.click();
+    await cartShoppingLabelLocator.click();
+    await expect(loadingLocator).not.toBeVisible();
+    await expect(selectedProductNameLocator).toBeVisible();
+    await expect(selectedProductColorLocator).toBeVisible();
+    await expect(selectedProductSizeLocator).toBeVisible();
 }
