@@ -19,54 +19,58 @@ export async function assertSignUpPage(
     assertData: SignUpFormFixtures,
 ) {
     const { signupFormHeader, signupFormPresonalInfromationHeader, signInHeader, firstNameLabel, lastNameLabel, emailLabel, passwordLabel, confirmPasswordLabel, requiredFieldDesclimer } = assertData;
+    const signupHeaderLocator = page.getByRole("heading", {
+        name: signupFormHeader,
+    });
+    const personalInfromationHeaderLocator = page.getByText(signupFormPresonalInfromationHeader, { exact: true });
+    const signinHeaderLocator = page.getByText(signInHeader, { exact: true });
+    const firstNameLabelLocator = page.getByText(firstNameLabel, { exact: true });
+    const lastNameLabelLocator = page.getByText(lastNameLabel, { exact: true });
+    const emailLabelLocator = page.getByText(emailLabel, { exact: true });
+    const passwordLabelLocator = page.getByText(passwordLabel, { exact: true }).nth(0);
+    const confirmPasswordLabelLocator = page.getByText(confirmPasswordLabel, { exact: true }).nth(0);
 
     await assertFontFamilyAndSize(
 
-        page.getByRole("heading", {
-            name: signupFormHeader,
-        }),
+        signupHeaderLocator,
         "40px",
     );
     await assertFontFamilyAndSize(
 
-        page.getByText(signupFormPresonalInfromationHeader, { exact: true }),
+        personalInfromationHeaderLocator,
         "22px",
     );
 
     await assertFontFamilyAndSize(
 
-        page.getByText(signInHeader, { exact: true }),
+        signinHeaderLocator,
         "22px",
     );
 
     await assertFontFamilyAndSize(
 
-        page.getByText(firstNameLabel, { exact: true }),
+        firstNameLabelLocator,
         "14px",
     );
     await assertFontFamilyAndSize(
 
-        page.getByText(lastNameLabel, { exact: true }),
+        lastNameLabelLocator,
+        "14px",
+    );
+
+    await assertFontFamilyAndSize(
+
+        emailLabelLocator,
         "14px",
     );
     await assertFontFamilyAndSize(
 
-        page.getByText(lastNameLabel, { exact: true }),
+        passwordLabelLocator,
         "14px",
     );
     await assertFontFamilyAndSize(
 
-        page.getByText(emailLabel, { exact: true }),
-        "14px",
-    );
-    await assertFontFamilyAndSize(
-
-        page.getByText(passwordLabel, { exact: true }).nth(0),
-        "14px",
-    );
-    await assertFontFamilyAndSize(
-
-        page.getByText(confirmPasswordLabel, { exact: true }).nth(0),
+        confirmPasswordLabelLocator,
         "14px",
     );
 
@@ -81,10 +85,10 @@ export async function assertSignUpPageValidations(
     const emailAddressErrorLocator = page.locator("#email_address-error");
     const firstNameErrorLocator = page.locator("#firstname-error");
     const lastNameErrorLocator = page.locator("#lastname-error");
-
+    const emailLocator = page.locator("input[type='email'][name='email']");
 
     await expect(createAccountButtonLocator).toBeVisible();
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
 
     await expect(firstNameErrorLocator).toHaveText(requiredFieldValidationMessage)
     await assertFontFamilyAndSize(
@@ -126,8 +130,8 @@ export async function assertSignUpPageValidations(
         emailAddressErrorLocator,
         "12px",
     );
-    await page.locator("input[type='email'][name='email']").fill("!@#$%^&*()_")
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await emailLocator.fill("!@#$%^&*()_")
+    await createAccountButtonLocator.click();
 
     await expect(emailAddressErrorLocator).toHaveText(emailAddressValidationMessage);
     await assertFontFamilyAndSize(
@@ -143,6 +147,7 @@ export async function assertPasswordsValidations(
 ) {
     const { createAccountButtonLabel, emailAddressValidationMessage, passwordsAreNotTheSameValidationMessage, passwirdIsTooShortValidationMessage, passwordCharactersValidationMessage } = assertData;
 
+    const createAccountButtonLocator = page.getByRole("button", { name: createAccountButtonLabel });
     const passwordLocator = page.locator("input[type='password'][id='password']");
     const passwordConfiramtionLocator = page.locator("input[type='password'][id='password-confirmation']");
     const emailAddressErrorLocator = page.locator("#email_address-error");
@@ -150,28 +155,28 @@ export async function assertPasswordsValidations(
     const passwordStrengthErrorLocator = page.locator("div[id='password-error']");
 
     await passwordLocator.fill("test");
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
     await expect(passwordStrengthErrorLocator).toHaveText(passwirdIsTooShortValidationMessage);
 
     await passwordLocator.fill("123456789");
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
     await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("test123123123");
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
     await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("1!@#$%^&*!");
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
     await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("TEsTTHReeCLASSES");
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
     await expect(passwordStrengthErrorLocator).toHaveText(passwordCharactersValidationMessage);
 
     await passwordLocator.fill("!@#$%^&*()_");
     await passwordConfiramtionLocator.fill(")(*&^%#$%^&*");
-    await page.getByRole('button', { name: createAccountButtonLabel }).click();
+    await createAccountButtonLocator.click();
 
     await expect(emailAddressErrorLocator).toHaveText(emailAddressValidationMessage);
     await expect(passwordErrorConfiramtionLocator).toHaveText(passwordsAreNotTheSameValidationMessage);
@@ -186,11 +191,12 @@ export async function assertCreatedAccount(
 ) {
     const { accountDetailsPageHeader, contactInformationHeader } = assertData;
     const contactInformationLocator = page.locator(`:below(span:has-text("${contactInformationHeader}"))`);
+    const accountDetailsHeaderLocator = page.getByRole("heading", {
+        name: accountDetailsPageHeader,
+    });
     await assertFontFamilyAndSize(
 
-        page.getByRole("heading", {
-            name: accountDetailsPageHeader,
-        }),
+        accountDetailsHeaderLocator,
         "40px",
     );
 
@@ -204,7 +210,8 @@ export async function assertRegistrationMessage(
     assertData: SignUpFormFixtures
 ) {
     const { registrationThankYouMessage } = assertData;
-    
-    await expect(page.getByText(registrationThankYouMessage, { exact: true })).toBeVisible();
+    const thankYouMessageLocator = page.getByText(registrationThankYouMessage, { exact: true });
+
+    await expect(thankYouMessageLocator).toBeVisible();
 
 }
