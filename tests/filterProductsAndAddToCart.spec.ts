@@ -39,7 +39,7 @@ test.describe.parallel("Select product category, apply filters and add to cart",
             await assertSelectedProductsFromMainMenu(page, testObject);
             await selectAndAssertFirstFilterProducts(page, testObject);
             await selectAndAssertSecondtFilterProducts(page, testObject);
-            await addAndAssertProductToCart(page, testObject);
+            await addAndAssertProductToCart(page, testObject, assertData);
             await page.close();
         });
     }

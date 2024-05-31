@@ -1,4 +1,9 @@
 {
     "searchPlacholderMessage": "Search entire store here...",
-    "noSearchResultsWarning": "Your search returned no results."
+    "noSearchResultsWarning": "Your search returned no results.",
+    "cartLoadingMessage": "My Cart Loading...",
+    "addToCartMessage": "Adding...",
+    "myCartLabel": "My Cart",
+    "shoppingCartLabel": "shopping cart",
+    "loadingMessage": "Loading..."
 }

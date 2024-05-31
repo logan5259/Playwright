@@ -29,6 +29,11 @@ export interface SignUpFormFixtures {
 export interface ProductsFixtures {
   searchPlacholderMessage: string;
   noSearchResultsWarning: string;
+  cartLoadingMessage: string;
+  addToCartMessage: string;
+  myCartLabel: string;
+  shoppingCartLabel: string;
+  loadingMessage:string;
 }
 
 export interface SearchTestConfiguration {
